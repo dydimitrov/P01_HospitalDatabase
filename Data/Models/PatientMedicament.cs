@@ -6,11 +6,6 @@ namespace P01_HospitalDatabase.Data.Models
 {
     public class PatientMedicament
     {
-        public PatientMedicament()
-        {
-
-        }
-
         public int PatientId { get; set; }
         public Patient Patient { get; set; }
 
