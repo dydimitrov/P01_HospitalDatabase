@@ -62,6 +62,9 @@ namespace P01_HospitalDatabase.Data
                 entity.Property(e => e.Email)
                     .HasMaxLength(80)
                     .IsUnicode(false);
+
+                entity.Property(e => e.HasInsurance)
+                    .HasDefaultValue(true);
             });
 
             builder.Entity<Visitation>(entity =>
@@ -71,6 +74,11 @@ namespace P01_HospitalDatabase.Data
                 entity.HasKey(e => e.VisitationId);
 
                 entity.Property(e => e.VisitationId).HasColumnName("VisitationID");
+
+                entity.Property(e => e.Date)
+                    .IsRequired()
+                    .HasColumnType("DATETIME2")
+                    .HasDefaultValueSql("GETDATE()");
 
                 entity.Property(e => e.Comments)
                     .HasMaxLength(250)
@@ -83,19 +91,6 @@ namespace P01_HospitalDatabase.Data
                     .HasConstraintName("FK_Visitations_Patients");
 
                 
-            });
-
-            builder.Entity<Medicament>(entity =>
-            {
-                entity.ToTable("Medicaments");
-
-                entity.HasKey(e => e.MedicamentId);
-
-                entity.Property(e => e.MedicamentId).HasColumnName("MedicamentID");
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .IsUnicode(true);
             });
 
             builder.Entity<Diagnose>(entity =>
@@ -117,8 +112,21 @@ namespace P01_HospitalDatabase.Data
                 entity.HasOne(e => e.Patient)
                     .WithMany(p => p.Diagnoses)
                     .HasForeignKey(e => e.PatientId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Diagnoses_Patients");
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<Medicament>(entity =>
+            {
+                entity.ToTable("Medicaments");
+
+                entity.HasKey(e => e.MedicamentId);
+
+                entity.Property(e => e.MedicamentId).HasColumnName("MedicamentID");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(true);
             });
 
             builder.Entity<PatientMedicament>(entity =>
@@ -128,14 +136,12 @@ namespace P01_HospitalDatabase.Data
                 entity.HasOne(e => e.Patient)
                     .WithMany(p => p.Prescriptions)
                     .HasForeignKey(e => e.PatientId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_PatientMedicament_Patients");
+                    .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(e => e.Medicament)
                     .WithMany(m => m.Prescriptions)
                     .HasForeignKey(e => e.MedicamentId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_PatientMedicament_Medicaments");
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             builder.Entity<Doctor>(entity =>
@@ -147,6 +153,7 @@ namespace P01_HospitalDatabase.Data
                 entity.Property(d => d.DoctorId).HasColumnName("DoctorId");
 
                 entity.Property(d => d.Name)
+                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(true);
 
