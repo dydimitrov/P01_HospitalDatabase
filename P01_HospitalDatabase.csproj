@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20180216120039_initial.cs" />
+    <Compile Remove="Migrations\20180219084806_initial.cs" />
+    <Compile Remove="Migrations\20180219085649_initial.cs" />
+    <Compile Remove="Migrations\20180219090013_CorectionRelationship.cs" />
+    <Compile Remove="Migrations\20180219093757_relations.cs" />
+    <Compile Remove="Migrations\20180219094409_initial.cs" />
+    <Compile Remove="Migrations\20180219113318_initial.cs" />
   </ItemGroup>
 
   <ItemGroup>
